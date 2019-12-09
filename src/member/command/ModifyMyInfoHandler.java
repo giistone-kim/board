@@ -34,6 +34,7 @@ public class ModifyMyInfoHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest request, HttpServletResponse response) {
+		
 		return FORM_VIEW;
 	}
 
@@ -68,7 +69,7 @@ public class ModifyMyInfoHandler implements CommandHandler {
 //			oriFile = multi.getOriginalFileName(str);
 	
 			String profileImage = file;
-			
+//			구현중			
 			if (file != null) // 프로필 이미지 경로 셋팅
 				profileImage = "C:\\workspace\\board\\WebContent\\profileimg/" + file;
 			else // 이미지 입력 null 처리
