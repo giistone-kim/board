@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>Board</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<listener>
+		<listener-class>jdbc.DBCPInitListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>poolConfig</param-name>
+		<param-value>
+			jdbcdriver=com.mysql.jdbc.Driver
+	  		jdbcUrl=jdbc:mysql://localhost:3306/board?useSSL=false
+	  		dbUser=root
+	  		dbPass=YES
+	  		validationQuery=select 1
+	  		minIdle=3
+	  		maxTotal=30
+	  		poolName=board
+		</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>CharacterEncoding</filter-name>
+		<filter-class>util.CharacterEncodingFilter</filter-class>
+
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CharacterEncoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>AESFilter</filter-name>
+		<filter-class>filter.AESFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>AESFilter</filter-name>
+		<url-pattern>/join.do</url-pattern>
+		<url-pattern>/login.do</url-pattern>
+		<url-pattern>/nlogin.do</url-pattern>
+		<url-pattern>/changePwd.do</url-pattern>
+		<url-pattern>/setPwd.do</url-pattern>
+		<url-pattern>/deleteMyAccount.do</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>LoginCheckFilter</filter-name>
+		<filter-class>filter.LoginCheckFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>LoginCheckFilter</filter-name>
+		<url-pattern>/myinfo.do</url-pattern>
+		<url-pattern>/changePwd.do</url-pattern>
+		<url-pattern>/noti.do</url-pattern>
+		<url-pattern>/user.do</url-pattern>
+		<url-pattern>/deleteMyAccount.do</url-pattern>
+		<url-pattern>/board/write.do</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>PasswordCheckFilter</filter-name>
+		<filter-class>filter.PasswordCheckFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>PasswordCheckFilter</filter-name>
+		<url-pattern>/deleteMyAccount.do</url-pattern>
+		<url-pattern>/changePwd.do</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>NicknameCheckFilter</filter-name>
+		<filter-class>filter.NicknameCheckFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>NicknameCheckFilter</filter-name>
+		<url-pattern>/board/write.do</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>ProfileImageNullCheckFilter</filter-name>
+		<filter-class>filter.ProfileImageCheckFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ProfileImageNullCheckFilter</filter-name>
+		<url-pattern>/myinfo.do</url-pattern>
+		<url-pattern>/board/write.do</url-pattern>
+		<url-pattern>/board/modify.do</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>RegisterEmailCheckFilter</filter-name>
+		<filter-class>filter.RegisterEmailCheckFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>RegisterEmailCheckFilter</filter-name>
+		<url-pattern>/myinfo.do</url-pattern>
+		<url-pattern>/changePwd.do</url-pattern>
+		<url-pattern>/noti.do</url-pattern>
+		<url-pattern>/deleteMyAccount.do</url-pattern>
+		<url-pattern>/board/write.do</url-pattern>
+		<url-pattern>/user.do</url-pattern>
+	</filter-mapping>
+	
+	<servlet>
+		<servlet-name>ControllerUsingURI</servlet-name>
+		<servlet-class>mvc.controller.ControllerUsingURI</servlet-class>
+		<init-param>
+			<param-name>configFile</param-name>
+			<param-value>
+	  			/WEB-INF/commandHandlerURI.properties
+	  		</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ControllerUsingURI</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+</web-app>
